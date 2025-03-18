@@ -45,7 +45,7 @@
           GLOBAL.composite.state = v + GLOBAL.clicks.state;
         });
         GLOBAL.clicks.subscribe("sync-composite", (_, v) => {
-          GLOBAL.composite.state = v + inputName.state.get();
+          GLOBAL.composite.state = inputName.state.get() + v;
         });
       });
     </script>
@@ -79,7 +79,7 @@
 
         <figure>
           <div>
-            <h2 data-reactive data-bind="GLOBAL.both|composite">
+            <h2 data-reactive data-bind="GLOBAL|composite">
               Both: {{composite}}
             </h2>
           </div>
