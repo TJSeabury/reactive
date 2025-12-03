@@ -17,7 +17,9 @@ export default defineConfig( {
           // Add any global variables if needed
         }
       }
-    }
+    },
+    sourcemap: true,
+    minify: false // Disable minification for better error messages, or set to 'esbuild'/'terser' with sourcemaps
   }
 } );
 

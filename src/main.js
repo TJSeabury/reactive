@@ -26,6 +26,13 @@ export const reactiveFactory = ( initialValue ) => {
   };
 
   const subscribe = ( key, callback ) => {
+    if ( typeof callback !== 'function' ) {
+      throw new TypeError(
+        `Cannot subscribe: callback must be a function. ` +
+        `Received: ${typeof callback} for key "${key}". ` +
+        `Value: ${JSON.stringify( callback )}`
+      );
+    }
     if ( !subscriptions.hasOwnProperty( key ) ) {
       subscriptions[key] = callback;
       return () => unsubscribe( key );
@@ -40,12 +47,28 @@ export const reactiveFactory = ( initialValue ) => {
 
     for ( const [key, callback] of Object.entries( subscriptions ) ) {
       try {
+        if ( typeof callback !== 'function' ) {
+          throw new TypeError(
+            `Subscription callback for key "${key}" is not a function. ` +
+            `Received: ${typeof callback}. ` +
+            `Value: ${JSON.stringify( callback )}. ` +
+            `This usually means the callback was not properly set up.`
+          );
+        }
+        // Callback receives (subscriptionKey, newValue) as arguments
         callback( key, v );
       } catch ( err ) {
         console.error(
           `Error encountered while processing subscription with key: ${key}`,
+          `\n  Callback: ${callback?.toString?.() || String( callback )}`,
+          `\n  Value being set: ${JSON.stringify( v )}`,
+          `\n  Error:`,
           err
         );
+        // Re-throw in development to see full stack trace
+        if ( typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production' ) {
+          throw err;
+        }
       }
     }
   };
@@ -66,6 +89,13 @@ export const reactiveObjectFactory = ( initialValue ) => {
   };
 
   const subscribe = ( key, callback ) => {
+    if ( typeof callback !== 'function' ) {
+      throw new TypeError(
+        `Cannot subscribe: callback must be a function. ` +
+        `Received: ${typeof callback} for key "${key}". ` +
+        `Value: ${JSON.stringify( callback )}`
+      );
+    }
     if ( !subscriptions.hasOwnProperty( key ) ) {
       subscriptions[key] = callback;
       return () => unsubscribe( key );
@@ -80,12 +110,28 @@ export const reactiveObjectFactory = ( initialValue ) => {
 
     for ( const [key, callback] of Object.entries( subscriptions ) ) {
       try {
+        if ( typeof callback !== 'function' ) {
+          throw new TypeError(
+            `Subscription callback for key "${key}" is not a function. ` +
+            `Received: ${typeof callback}. ` +
+            `Value: ${JSON.stringify( callback )}. ` +
+            `This usually means the callback was not properly set up.`
+          );
+        }
+        // Callback receives (subscriptionKey, newValue) as arguments
         callback( key, v );
       } catch ( err ) {
         console.error(
           `Error encountered while processing subscription with key: ${key}`,
+          `\n  Callback: ${callback?.toString?.() || String( callback )}`,
+          `\n  Value being set: ${JSON.stringify( v )}`,
+          `\n  Error:`,
           err
         );
+        // Re-throw in development to see full stack trace
+        if ( typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production' ) {
+          throw err;
+        }
       }
     }
   };
