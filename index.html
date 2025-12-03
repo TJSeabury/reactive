@@ -1,90 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
 
-      :root {
-        font-size: 16px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        padding: 2rem;
-        background-color: #111;
-        color: #fff;
-      }
+    :root {
+      font-size: 16px;
+    }
 
-      nagare-scope {
-        display: contents;
-      }
-    </style>
-    <script type="module">
-      import {
-        GLOBAL,
-        REACTIVES,
-        initialize,
-        reactiveObjectFactory,
-      } from "/src/index.js";
+    body {
+      padding: 2rem;
+      background-color: #111;
+      color: #fff;
+    }
 
-      GLOBAL.clicks = reactiveObjectFactory(0);
-      GLOBAL.composite = reactiveObjectFactory("Both");
+    nagare-scope {
+      display: contents;
+    }
 
-      initialize();
+  </style>
+  <script type="module" src="/src/index.js"></script>
+</head>
 
-      window.addEventListener("DOMContentLoaded", () => {
-        const inputName = Object.values(REACTIVES).find((el) => {
-          return el.getAttribute("id") === "name";
-        });
-        inputName.state.subscribe("sync-composite", (_, v) => {
-          GLOBAL.composite.state = v + GLOBAL.clicks.state;
-        });
-        GLOBAL.clicks.subscribe("sync-composite", (_, v) => {
-          GLOBAL.composite.state = inputName.state.get() + v;
-        });
-      });
-    </script>
-  </head>
+<body>
+  <div style="display: flex; gap: 1rem">
+    <nagare-scope data-scope-name="GLOBAL">
+      <figure>
+        <div>
+          <h2 data-reactive data-bind="input#name|name">Hello, {{name}}!</h2>
+        </div>
+        <input data-reactive data-reactive-on="input" id="name" class="reactive-field" type="text" value="World" />
+      </figure>
+      <figure>
+        <div>
+          <button onclick="(() => {GLOBAL.clicks.state += 1;})()">+</button>
+          <h2 data-reactive data-bind="GLOBAL.clicks|clicks"> Clicks: {{clicks}} </h2>
+          <button onclick="(() => {GLOBAL.clicks.state -= 1;})()">-</button>
+        </div>
+      </figure>
+      <figure>
+        <div>
+          <h2 data-reactive data-bind="GLOBAL.name_and_clicks|name_and_clicks" data-compute="name_and_clicks|name_plus_clicks_sqrt(element(#name),GLOBAL.clicks)"> Both: {{name_and_clicks}} </h2>
+        </div>
+      </figure>
+    </nagare-scope>
+  </div>
+</body>
 
-  <body>
-    <div style="display: flex; gap: 1rem">
-      <nagare-scope data-scope-name="GLOBAL">
-        <figure>
-          <div>
-            <h2 data-reactive data-bind="input#name|name">Hello, {{name}}!</h2>
-          </div>
-          <input
-            data-reactive
-            id="name"
-            class="reactive-field"
-            type="text"
-            value="World"
-          />
-        </figure>
-
-        <figure>
-          <div>
-            <button onclick="(() => {GLOBAL.clicks.state += 1;})()">+</button>
-            <h2 data-reactive data-bind="GLOBAL.clicks|clicks">
-              Clicks: {{clicks}}
-            </h2>
-            <button onclick="(() => {GLOBAL.clicks.state -= 1;})()">-</button>
-          </div>
-        </figure>
-
-        <figure>
-          <div>
-            <h2 data-reactive data-bind="GLOBAL|composite">
-              Both: {{composite}}
-            </h2>
-          </div>
-        </figure>
-      </nagare-scope>
-    </div>
-  </body>
 </html>
