@@ -1,4 +1,4 @@
-# Reactive
+# Nagare
 
 A lightweight, declarative reactivity library for vanilla JavaScript that enables reactive data binding, computed values, and automatic DOM updates without a framework.
 
