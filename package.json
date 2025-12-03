@@ -1,7 +1,7 @@
 {
-  "name": "nagare",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@tjseabury/nagare",
+  "version": "0.0.1",
+  "description": "A lightweight, declarative reactivity library for vanilla JavaScript that enables reactive data binding, computed values, and automatic DOM updates without a framework.",
   "main": "./dist/nagare.umd.js",
   "module": "./dist/nagare.es.js",
   "files": [
@@ -12,10 +12,17 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TJSeabury/nagare.git"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.4.1",
+  "author": "Tyler Seabury",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjseabury/nagare/issues"
+  },
+  "homepage": "https://github.com/tjseabury/nagare#readme",
   "devDependencies": {
     "vite": "^7.2.6"
   }
